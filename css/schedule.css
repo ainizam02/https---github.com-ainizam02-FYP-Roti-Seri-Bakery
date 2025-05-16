@@ -1,0 +1,679 @@
+.schedule-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #000;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h2 {
+    font-size: 1.2rem;
+    color: #000;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #000;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #000;
+}
+
+.user-assignments {
+    margin-top: 1rem;
+}
+
+.user-assignments h3 {
+    font-size: 1.1rem;
+    color: #000;
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+}
+
+.user-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.user-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #000;
+}
+
+.user-checkbox:hover {
+    background: #f8f9fa;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 1rem;
+}
+
+.submit-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background: #218838;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.form-group select option {
+    color: #000;
+    background: white;
+}
+
+.schedule-container {
+    padding: 1rem;
+}
+
+.filters {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-form {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #000;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #000;
+}
+
+.filter-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: #000;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    color: #000;
+}
+
+.schedule-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.sort-link {
+    color: #000;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    min-width: 100px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-badge.pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-badge.in-progress {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.status-badge.completed {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status-badge:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-btn, .delete-btn {
+    padding: 0.4rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.edit-btn {
+    background: #28a745;
+}
+
+.delete-btn {
+    background: #dc3545;
+}
+
+.no-records {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+/* Equipment Selection Styles
+.equipment-selection {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.equipment-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    opacity: 1;
+}
+
+.equipment-checkbox.in-use {
+    background-color: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.equipment-checkbox.maintenance {
+    background-color: rgba(23, 162, 184, 0.1);
+    border: 1px solid rgba(23, 162, 184, 0.3);
+}
+
+.equipment-checkbox.out-of-order {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.equipment-checkbox.out-of-order input[type="checkbox"],
+.equipment-checkbox.maintenance input[type="checkbox"] {
+    cursor: not-allowed;
+}
+
+.equipment-status {
+    margin-left: auto;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.equipment-status.available {
+    background-color: #28a745;
+    color: white;
+}
+
+.equipment-status.in-use {
+    background-color: #999999;
+    color: #000;
+}
+
+.equipment-status.maintenance {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.equipment-status.out-of-order {
+    background-color: #dc3545;
+    color: white;
+}
+
+.no-equipment {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    font-style: italic;
+}
+
+.equipment-checkbox input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.equipment-checkbox input[type="checkbox"]:disabled + span {
+    color: #999;
+}  */
+
+/* General layout for user selection */
+.user-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.user-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: calc(33.333% - 10px); /* Three columns */
+    box-sizing: border-box;
+}
+
+.user-checkbox input {
+    margin-right: 10px;
+}
+
+.user-checkbox .status {
+    margin-left: auto;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Styling for available and unavailable statuses */
+.status.available {
+    background-color: #28a745;
+    color: #fff;
+    font-weight: bold;
+}
+
+.status.unavailable {
+    background-color: #dc3545;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Equipment selection container */
+.equipment-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Individual equipment checkbox layout */
+.equipment-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: calc(33.333% - 10px); /* Three columns */
+    box-sizing: border-box;
+}
+
+/* Styling for input and status labels */
+.equipment-checkbox input {
+    margin-right: 10px;
+}
+
+.equipment-checkbox .status {
+    margin-left: auto;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Styling for statuses */
+.status.available {
+    background-color: #28a745;
+    color: #fff;
+    font-weight: bold;
+}
+
+.status.in-use {
+    background-color: #ffc107;
+    color: #fff;
+    font-weight: bold;
+    
+}
+
+.status.maintenance {
+    background-color: #17a2b8;
+    color: #fff;
+    font-weight: bold;
+}
+
+.status.out-of-order {
+    background-color: #dc3545;
+    color: #fff;
+    font-weight: bold;
+}
+
+.calculation-info {
+    display: block;
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.input-with-button {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.calculate-btn {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.calculate-btn:hover {
+    background-color: #45a049;
+}
+
+.calculate-btn i {
+    font-size: 0.9em;
+}
+
+.availability-status {
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.availability-status.available {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.availability-status.unavailable {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.user-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Status styles for both users and equipment */
+.status {
+    margin-left: auto;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* User status styles */
+.status.available {
+    background-color: #28a745;
+}
+
+.status.unavailable {
+    background-color: #dc3545;
+}
+
+/* Equipment status styles */
+.status.in-use {
+    background-color: #ffc107;
+    color: #000; /* Dark text for better visibility on yellow */
+}
+
+.status.out-of-order {
+    background-color: #dc3545;
+}
+
+/* Container styles */
+.user-selection, 
+.equipment-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 1rem;
+}
+
+/* Checkbox container styles */
+.user-checkbox,
+.equipment-checkbox {
+    flex: 0 0 calc(33.333% - 14px); /* Three items per row with gap consideration */
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Checkbox input styles */
+.user-checkbox input[type="checkbox"],
+.equipment-checkbox input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Name and role styles */
+.user-checkbox span:not(.status),
+.equipment-checkbox span:not(.status) {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+/* Status badge styles */
+.status {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-left: 10px;
+    text-align: center;
+    min-width: 90px;
+}
+
+/* Status colors */
+.status.available {
+    background-color: #28a745;
+    color: white;
+}
+
+.status.unavailable {
+    background-color: #dc3545;
+    color: white;
+}
+
+.status.in-use {
+    background-color: #ffc107;
+    color: #000;
+}
+
+/* Disabled state styles */
+.user-checkbox input[type="checkbox"]:disabled,
+.equipment-checkbox input[type="checkbox"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.user-checkbox input[type="checkbox"]:disabled ~ span,
+.equipment-checkbox input[type="checkbox"]:disabled ~ span {
+    opacity: 0.6;
+}
+
+/* Hover effect */
+.user-checkbox:hover,
+.equipment-checkbox:hover {
+    border-color: #ccc;
+    background-color: #fafafa;
+}
+
+/* Section headers */
+.form-section h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .user-checkbox,
+    .equipment-checkbox {
+        flex: 0 0 calc(50% - 10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .user-checkbox,
+    .equipment-checkbox {
+        flex: 0 0 100%;
+    }
+}
+
+.btn.edit-btn[disabled] {
+    background-color: #cccccc;
+    pointer-events: none;
+}
+
+/* Style for form fields in completed schedules */
+form.schedule-form.completed input,
+form.schedule-form.completed select,
+form.schedule-form.completed button[type="submit"] {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Style for the status select when schedule is completed */
+form.schedule-form.completed #status {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}

@@ -1,0 +1,286 @@
+.navbar {
+    
+    background-color: #1a1a1a;
+    padding: 1rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.nav-brand .logo {
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #007bff;
+}
+
+/* Adjust main content to account for fixed navbar */
+main {
+    padding-top: 80px;
+}
+
+/* Add styles for footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 1.5rem;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.footer-logo {
+    width: 200px;
+    height: auto;
+    margin: 0;
+    order: 2;
+}
+
+.footer-text {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    white-space: nowrap;
+    order: 1;
+} 
+
+.about-container {
+    
+    max-width: 1200px;
+    
+}
+
+.about-section {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.contact-header {
+    text-align: center; /* Center align the logo and title */
+    margin-bottom: 20px; /* Add spacing below the header */
+}
+
+.contact-logo {
+    width: 300px; /* Adjust the logo size */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure it stays on its own line */
+    margin: 0 auto; /* Center the logo horizontally */
+    margin-bottom: 10px; /* Space between logo and title */
+}
+
+.about-section.reverse {
+    flex-direction: row-reverse;
+}
+
+.section-image {
+    flex: 1;
+    max-width: 300px;
+}
+
+.section-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.section-content {
+    flex: 2;
+    color: #000;
+}
+
+.section-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.section-content p {
+    text-align: justify;
+}
+
+.mission-vision {
+    display: grid;
+    gap: 2rem;
+}
+
+.mission h3,
+.vision h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.mission i,
+.vision i {
+    color: #007bff;
+}
+
+.mission p,
+.vision p {
+    text-align: justify;
+}
+
+/* Features Section */
+.features {
+    display: block;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: #000;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #666;
+}
+
+/* Contact Section */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.contact-info {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    color: #000;
+}
+
+.contact-item i {
+    font-size: 1.5rem;
+    color: #503f19;
+}
+
+.contact-item h3 {
+    margin: 0;
+    color: #000;
+    text-align: left;
+}
+
+.contact-item p {
+    margin: 0;
+    color: #666;
+    text-align: left;
+}
+
+.business-hours {
+    color: #000;
+}
+
+.business-hours h3 {
+    margin: 0;
+    color: #000;
+    text-align: left;
+}
+
+.business-hours i {
+    font-size: 1.5rem;
+    color: #503f19;
+}
+
+.business-hours h3 i {
+    margin-right: 10px;
+}
+
+.business-hours ul {
+    list-style: none;
+    padding: 0;
+}
+
+.business-hours li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.business-hours li span {
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-section.reverse {
+        flex-direction: column;
+    }
+
+    .section-image {
+        max-width: 70%;
+
+    }
+
+    .contact-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+} 

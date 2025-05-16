@@ -1,0 +1,562 @@
+.batch-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #000;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h2 {
+    font-size: 1.2rem;
+    color: #000;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #000;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #000;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.task-assignments {
+    margin-top: 1rem;
+}
+
+.task-assignment {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    align-items: end;
+}
+
+.add-task-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.remove-task {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 1rem;
+}
+
+.submit-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.batch-container {
+    padding: 1rem;
+    width: 100%;
+    box-sizing: content-box;
+}
+
+.filters {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.filter-form {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-btn, .reset-btn, .add-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    background: #007bff;
+}
+
+.reset-btn {
+    background: #6c757d;
+    text-decoration: none;
+}
+
+.add-btn {
+    background: #28a745;
+    text-decoration: none;
+}
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.batch-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #000;
+    min-width: 1200px;
+}
+
+.batch-table th,
+.batch-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.batch-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    min-width: 100px;
+}
+
+.status-badge.pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-badge.in-progress {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.status-badge.completed {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actions .edit-btn,
+.actions .delete-btn {
+    width: 32px;
+    height: 32px;
+}
+
+.no-records {
+    text-align: center;
+    padding: 2rem;
+    color: #000;
+}
+
+.sort-link {
+    color: #000 !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.filter-btn i {
+    font-size: 0.9rem;
+}
+
+.batch-table th {
+    white-space: nowrap;
+}
+
+.sort-link:hover {
+    color: #007bff;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 1rem;
+    min-height: calc(100vh - 60px);
+    width: calc(100% - 250px);
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.remarks-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+}
+
+.remarks-cell:hover {
+    white-space: normal;
+    overflow: visible;
+    position: relative;
+}
+
+.batch-table th:first-child,
+.batch-table td:first-child {
+    width: 60px;
+}
+
+.batch-table th:last-child,
+.batch-table td:last-child {
+    width: 100px;
+}
+
+/* Update text colors for table cells */
+.batch-table td {
+    color: #000;
+}
+
+/* Update assigned users text color */
+.batch-table td:nth-child(6) {
+    color: #000;
+}
+
+/* Update remarks text color */
+.remarks-cell {
+    color: #000;
+}
+
+/* Update filter labels */
+.filter-group label {
+    color: #000;
+}
+
+/* Update dropdown text */
+.filter-group select,
+.filter-group input {
+    color: #000;
+}
+
+/* Update sort links */
+.sort-link {
+    color: #000 !important;
+}
+
+/* Update no records message */
+.no-records {
+    color: #000;
+}
+
+/* Update status badge text colors */
+.status-badge.pending {
+    background: #ffc107;
+    color: #000;
+}
+
+.status-badge.in-progress {
+    background: #007bff;
+    color: #fff;
+}
+
+.status-badge.completed {
+    background: #28a745;
+    color: #fff;
+}
+
+/* Update table headers */
+.batch-table th {
+    color: #000;
+    background: #f8f9fa;
+}
+
+/* Update filter section background */
+.filters {
+    background: white;
+}
+
+/* Update table container background */
+.table-container {
+    background: white;
+}
+
+/* Ensure all text in the table is black */
+.batch-table * {
+    color: #000;
+}
+
+/* Keep action buttons white text */
+.actions .edit-btn,
+.actions .delete-btn,
+.add-btn,
+.filter-btn {
+    color: white;
+}
+
+/* Add styles for quality comments */
+.quality-comments {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.quality-comments:hover {
+    white-space: normal;
+    overflow: visible;
+    position: relative;
+    background: #fff;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.batch-info {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.info-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    padding: 0.5rem;
+}
+
+.info-item {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.info-item label {
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+}
+
+.info-item span {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+/* Colors for each stat */
+.info-item:nth-child(1) span {
+    color: #007bff; /* Blue for total */
+}
+
+.info-item:nth-child(2) span {
+    color: #ffc107; /* Yellow for assigned */
+}
+
+.info-item:nth-child(3) span {
+    color: #28a745; /* Green for completed */
+}
+
+.info-item:nth-child(4) span {
+    color: #dc3545; /* Red for unassigned */
+}
+
+/* Make it responsive for smaller screens */
+@media (max-width: 768px) {
+    .info-grid {
+        flex-wrap: wrap;
+    }
+    
+    .info-item {
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .info-item {
+        flex: 1 1 100%;
+    }
+}
+
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+/* Add hover effect for better interactivity */
+.status-badge:hover {
+    opacity: 0.9;
+}
+
+/* Style for disabled edit button */
+.action-btn.edit-btn.disabled {
+    background-color: #cccccc;
+    opacity: 0.5;
+    cursor: not-allowed;
+    position: relative;
+}
+
+/* Add tooltip for disabled edit button */
+.action-btn.edit-btn.disabled:hover::after {
+    content: 'Cannot edit completed batch';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 5px;
+}
+
+/* Add arrow to tooltip */
+.action-btn.edit-btn.disabled:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    margin-bottom: -5px;
+}
+
+.info-message {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
