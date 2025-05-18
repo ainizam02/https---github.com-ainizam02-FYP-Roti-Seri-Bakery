@@ -163,6 +163,9 @@ function getSortIndicator($column) {
                 <a href="add_batch.php" class="add-btn">
                     <i class="fas fa-plus"></i> Add New Batch
                 </a>
+                <a href="export_batches.php" class="export-btn">
+                    <i class="fas fa-file-excel"></i> Export to Excel
+                </a>
             </div>
 
             <!-- Batches Table -->
