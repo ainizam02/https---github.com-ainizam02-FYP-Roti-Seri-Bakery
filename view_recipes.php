@@ -75,6 +75,9 @@ try {
                         <a href="add_recipe.php" class="add-btn">
                             <i class="fas fa-plus"></i> Add New Recipe
                         </a>
+                        <a href="export_recipes.php" class="export-btn">
+                            <i class="fas fa-file-excel"></i> Export to Excel
+                        </a>
                     </div>
                 <?php endif; ?>
                 <?php if (empty($recipes)): ?>

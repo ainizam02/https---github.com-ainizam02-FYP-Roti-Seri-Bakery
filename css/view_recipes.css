@@ -3,25 +3,41 @@
 }
 
 .table-actions {
-    margin-bottom: 1rem;
     display: flex;
-    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.add-btn, .export-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
 }
 
 .add-btn {
-    background: #28a745;
+    background-color: #4CAF50;
     color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .add-btn:hover {
-    background: #218838;
-    transition: background-color 0.3s ease;
+    background-color: #45a049;
+}
+
+.export-btn {
+    background-color: #217346;
+    color: white;
+}
+
+.export-btn:hover {
+    background-color: #1a5c38;
+}
+
+.add-btn i, .export-btn i {
+    margin-right: 8px;
 }
 
 .table-responsive {
