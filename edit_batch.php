@@ -24,7 +24,7 @@ $error_message = '';
 // Add these constants at the top of the file after session_start()
 define('MAX_REMARKS_LENGTH', 500);
 define('MAX_QUALITY_CHECK_LENGTH', 500);
-define('ALLOWED_TASKS', ['Mixing', 'Baking', 'Decorating']);
+define('ALLOWED_TASKS', ['Mixing', 'Baking', 'Decorating', 'Cooling', 'Packaging']);
 define('ALLOWED_STATUSES', ['Pending', 'In Progress', 'Completed']);
 
 try {
@@ -205,6 +205,8 @@ try {
             }
 
             $validated_assignments = [];
+            $baker_tasks = []; // Track tasks per baker
+
             foreach ($assignments as $assignment) {
                 // Validate user_id
                 $user_id = filter_var($assignment['user_id'], FILTER_VALIDATE_INT);
@@ -224,6 +226,18 @@ try {
                     throw new Exception("Invalid task selected");
                 }
 
+                // Check for duplicate tasks for the same baker
+                if (!isset($baker_tasks[$user_id])) {
+                    $baker_tasks[$user_id] = [];
+                }
+                
+                // Check if this baker already has this task
+                if (in_array($task, $baker_tasks[$user_id])) {
+                    throw new Exception("Baker already has this task assigned");
+                }
+                
+                $baker_tasks[$user_id][] = $task;
+
                 $validated_assignments[] = [
                     'user_id' => $user_id,
                     'task' => $task
@@ -241,9 +255,37 @@ try {
                                   WHERE batch_id = ?");
             $stmt->execute([$recipe_id, $schedule_id, $start_time, $end_time, $status, $remarks, $batch_id]);
 
-            // Delete existing assignments
-            $stmt = $conn->prepare("DELETE FROM tbl_batch_assignments WHERE batch_id = ?");
+            // Get existing assignments to compare
+            $stmt = $conn->prepare("SELECT * FROM tbl_batch_assignments WHERE batch_id = ?");
             $stmt->execute([$batch_id]);
+            $current_assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Create a map of existing assignments for easy lookup
+            $existing_assignments_map = [];
+            foreach ($current_assignments as $assignment) {
+                $key = $assignment['user_id'] . '_' . $assignment['ba_task'];
+                $existing_assignments_map[$key] = $assignment;
+            }
+
+            // Create a map of new assignments
+            $new_assignments_map = [];
+            foreach ($validated_assignments as $assignment) {
+                $key = $assignment['user_id'] . '_' . $assignment['task'];
+                $new_assignments_map[$key] = $assignment;
+            }
+
+            // Delete assignments that are no longer present
+            foreach ($existing_assignments_map as $key => $assignment) {
+                if (!isset($new_assignments_map[$key])) {
+                    $stmt = $conn->prepare("DELETE FROM tbl_batch_assignments 
+                                          WHERE batch_id = ? AND user_id = ? AND ba_task = ?");
+                    $stmt->execute([
+                        $batch_id,
+                        $assignment['user_id'],
+                        $assignment['ba_task']
+                    ]);
+                }
+            }
 
             // Insert new assignments
             if (!empty($validated_assignments)) {
@@ -252,11 +294,16 @@ try {
                                       VALUES (?, ?, ?, 'Pending')");
                 
                 foreach ($validated_assignments as $assignment) {
-                    $stmt->execute([
-                        $batch_id,
-                        $assignment['user_id'],
-                        $assignment['task']
-                    ]);
+                    $key = $assignment['user_id'] . '_' . $assignment['task'];
+                    
+                    // Only insert if this assignment doesn't already exist
+                    if (!isset($existing_assignments_map[$key])) {
+                        $stmt->execute([
+                            $batch_id,
+                            $assignment['user_id'],
+                            $assignment['task']
+                        ]);
+                    }
                 }
             }
 
