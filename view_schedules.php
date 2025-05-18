@@ -128,6 +128,9 @@ function getSortLink($field, $current_sort, $current_order) {
                     <a href="add_schedule.php" class="add-btn">
                         <i class="fas fa-plus"></i> Add New Schedule
                     </a>
+                    <a href="export_schedules.php" class="export-btn">
+                        <i class="fas fa-file-excel"></i> Export to Excel
+                    </a>
                 <?php endif; ?>
             </div>
 

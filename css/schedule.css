@@ -677,3 +677,26 @@ form.schedule-form.completed #status {
     background-color: #e9ecef;
     cursor: not-allowed;
 }
+
+.export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #217346;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.export-btn:hover {
+    background-color: #1a5c38;
+}
+
+.export-btn i {
+    font-size: 16px;
+}
