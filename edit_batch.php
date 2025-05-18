@@ -103,20 +103,58 @@ try {
             $allowed_taste_flavour = ['Excellent Flavour', 'Bland', 'Overly Sweet', 'Burnt Taste'];
             $allowed_shape_size = ['Uniform Shape', 'Uneven Size', 'Cracked Surface', 'Misshaped'];
             $allowed_packaging = ['Properly Packaged', 'Damaged Packaged', 'Missing Labels', 'Sealed Incorrectly'];
-// Validate QC Comments
-        if (strlen($qc_comments) > MAX_QUALITY_CHECK_LENGTH) {
-            throw new Exception("QC Comments exceed the maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
-        }
 
-            if (!in_array($production_stage, $allowed_stages) ||
-                !in_array($appearance, $allowed_appearance) ||
-                !in_array($texture, $allowed_texture) ||
-                !in_array($taste_flavour, $allowed_taste_flavour) ||
-                !in_array($shape_size, $allowed_shape_size)) {
-                throw new Exception("Invalid quality check data provided.");
+            // Validate QC Comments
+            if (strlen($qc_comments) > MAX_QUALITY_CHECK_LENGTH) {
+                throw new Exception("QC Comments exceed the maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
             }
 
-            // Insert Quality Check data into the database
+            // Only validate fields that are enabled based on production stage
+            if (!in_array($production_stage, $allowed_stages)) {
+                throw new Exception("Invalid production stage selected.");
+            }
+
+            // Validate appearance only if not disabled
+            if (!$appearance && $production_stage !== 'Mixing' && $production_stage !== 'Packaging') {
+                throw new Exception("Please select an appearance rating.");
+            }
+            if ($appearance && !in_array($appearance, $allowed_appearance)) {
+                throw new Exception("Invalid appearance rating selected.");
+            }
+
+            // Validate texture only if not disabled
+            if (!$texture && $production_stage !== 'Mixing' && $production_stage !== 'Packaging') {
+                throw new Exception("Please select a texture rating.");
+            }
+            if ($texture && !in_array($texture, $allowed_texture)) {
+                throw new Exception("Invalid texture rating selected.");
+            }
+
+            // Validate taste & flavour only if not disabled
+            if (!$taste_flavour && $production_stage !== 'Mixing' && $production_stage !== 'Packaging') {
+                throw new Exception("Please select a taste & flavour rating.");
+            }
+            if ($taste_flavour && !in_array($taste_flavour, $allowed_taste_flavour)) {
+                throw new Exception("Invalid taste & flavour rating selected.");
+            }
+
+            // Validate shape & size only if not disabled
+            if (!$shape_size && $production_stage !== 'Mixing' && $production_stage !== 'Decorating' && $production_stage !== 'Packaging') {
+                throw new Exception("Please select a shape & size rating.");
+            }
+            if ($shape_size && !in_array($shape_size, $allowed_shape_size)) {
+                throw new Exception("Invalid shape & size rating selected.");
+            }
+
+            // Validate packaging only if not disabled
+            if (!$packaging && $production_stage === 'Packaging') {
+                throw new Exception("Please select a packaging rating.");
+            }
+            if ($packaging && !in_array($packaging, $allowed_packaging)) {
+                throw new Exception("Invalid packaging rating selected.");
+            }
+
+            // Insert new quality check record
             $stmt = $conn->prepare("INSERT INTO tbl_quality_checks 
                 (batch_id, user_id, production_stage, appearance, texture, taste_flavour, shape_size, packaging, qc_comments) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -124,16 +162,13 @@ try {
                 $batch_id,
                 $_SESSION['user_id'],
                 $production_stage,
-                $appearance,
-                $texture,
-                $taste_flavour,
-                $shape_size,
-                $packaging,
+                $appearance ?: null,
+                $texture ?: null,
+                $taste_flavour ?: null,
+                $shape_size ?: null,
+                $packaging ?: null,
                 $qc_comments
             ]);
-            
-
-            // $success_message = "Quality check data submitted successfully!";
 
             // Validate batch_id
             $batch_id = filter_input(INPUT_POST, 'batch_id', FILTER_VALIDATE_INT);
@@ -243,10 +278,9 @@ try {
                                     batch_startTime = ?,
                                     batch_endTime = ?,
                                     batch_status = ?,
-                                    batch_remarks = ?,
-                                    quality_check = ?
+                                    batch_remarks = ?
                                   WHERE batch_id = ?");
-            $stmt->execute([$recipe_id, $schedule_id, $start_time, $end_time, $status, $remarks, $quality_check, $batch_id]);
+            $stmt->execute([$recipe_id, $schedule_id, $start_time, $end_time, $status, $remarks, $batch_id]);
 
             // Delete existing assignments
             $stmt = $conn->prepare("DELETE FROM tbl_batch_assignments WHERE batch_id = ?");
@@ -512,7 +546,7 @@ try {
 
                 <div class="form-group">
                     <label for="qc_comments">Quality Check Comments</label>
-                    <textarea id="qc_comments" name="qc_comments" rows="3" <?php echo $is_baker ? 'readonly' : ''; ?> 
+                    <textarea id="qc_comments" name="qc_comments" rows="3" 
                               placeholder="Enter quality check comments, production issues, or quantity concerns..."
                     ><?php echo htmlspecialchars($batch['qc_comments'] ?? ''); ?></textarea>
                 </div>
