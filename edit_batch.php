@@ -109,66 +109,28 @@ try {
                 throw new Exception("QC Comments exceed the maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
             }
 
-            // Only validate fields that are enabled based on production stage
-            if (!in_array($production_stage, $allowed_stages)) {
+            // Validate production stage
+            if ($production_stage && !in_array($production_stage, $allowed_stages)) {
                 throw new Exception("Invalid production stage selected.");
             }
 
-            // Validate appearance only if not disabled
-            if (!$appearance && $production_stage !== 'Mixing' && $production_stage !== 'Packaging') {
-                throw new Exception("Please select an appearance rating.");
+            // Insert new quality check record only if production stage is selected
+            if ($production_stage) {
+                $stmt = $conn->prepare("INSERT INTO tbl_quality_checks 
+                    (batch_id, user_id, production_stage, appearance, texture, taste_flavour, shape_size, packaging, qc_comments) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([
+                    $batch_id,
+                    $_SESSION['user_id'],
+                    $production_stage,
+                    $appearance ?: null,
+                    $texture ?: null,
+                    $taste_flavour ?: null,
+                    $shape_size ?: null,
+                    $packaging ?: null,
+                    $qc_comments
+                ]);
             }
-            if ($appearance && !in_array($appearance, $allowed_appearance)) {
-                throw new Exception("Invalid appearance rating selected.");
-            }
-
-            // Validate texture only if not disabled
-            if (!$texture && $production_stage !== 'Mixing' && $production_stage !== 'Packaging') {
-                throw new Exception("Please select a texture rating.");
-            }
-            if ($texture && !in_array($texture, $allowed_texture)) {
-                throw new Exception("Invalid texture rating selected.");
-            }
-
-            // Validate taste & flavour only if not disabled
-            if (!$taste_flavour && $production_stage !== 'Mixing' && $production_stage !== 'Packaging') {
-                throw new Exception("Please select a taste & flavour rating.");
-            }
-            if ($taste_flavour && !in_array($taste_flavour, $allowed_taste_flavour)) {
-                throw new Exception("Invalid taste & flavour rating selected.");
-            }
-
-            // Validate shape & size only if not disabled
-            if (!$shape_size && $production_stage !== 'Mixing' && $production_stage !== 'Decorating' && $production_stage !== 'Packaging') {
-                throw new Exception("Please select a shape & size rating.");
-            }
-            if ($shape_size && !in_array($shape_size, $allowed_shape_size)) {
-                throw new Exception("Invalid shape & size rating selected.");
-            }
-
-            // Validate packaging only if not disabled
-            if (!$packaging && $production_stage === 'Packaging') {
-                throw new Exception("Please select a packaging rating.");
-            }
-            if ($packaging && !in_array($packaging, $allowed_packaging)) {
-                throw new Exception("Invalid packaging rating selected.");
-            }
-
-            // Insert new quality check record
-            $stmt = $conn->prepare("INSERT INTO tbl_quality_checks 
-                (batch_id, user_id, production_stage, appearance, texture, taste_flavour, shape_size, packaging, qc_comments) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([
-                $batch_id,
-                $_SESSION['user_id'],
-                $production_stage,
-                $appearance ?: null,
-                $texture ?: null,
-                $taste_flavour ?: null,
-                $shape_size ?: null,
-                $packaging ?: null,
-                $qc_comments
-            ]);
 
             // Validate batch_id
             $batch_id = filter_input(INPUT_POST, 'batch_id', FILTER_VALIDATE_INT);
@@ -231,9 +193,6 @@ try {
             // Check length limits
             if (strlen($remarks) > MAX_REMARKS_LENGTH) {
                 throw new Exception("Remarks exceed maximum length of " . MAX_REMARKS_LENGTH . " characters");
-            }
-            if (strlen($qc_comments) > MAX_QUALITY_CHECK_LENGTH) {
-                throw new Exception("Quality check comments exceed maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
             }
 
             // Validate assignments array
@@ -460,7 +419,9 @@ try {
                                     <option value="">Select Task</option>
                                     <option value="Mixing" <?php echo $assignment['ba_task'] === 'Mixing' ? 'selected' : ''; ?>>Mixing</option>
                                     <option value="Baking" <?php echo $assignment['ba_task'] === 'Baking' ? 'selected' : ''; ?>>Baking</option>
+                                    <option value="Cooling" <?php echo $assignment['ba_task'] === 'Cooling' ? 'selected' : ''; ?>>Cooling</option>
                                     <option value="Decorating" <?php echo $assignment['ba_task'] === 'Decorating' ? 'selected' : ''; ?>>Decorating</option>
+                                    <option value="Packaging" <?php echo $assignment['ba_task'] === 'Packaging' ? 'selected' : ''; ?>>Packaging</option>
                                 </select>
                                 <?php if ($is_baker): ?>
                                     <input type="hidden" name="assignments[<?php echo $index; ?>][task]" value="<?php echo htmlspecialchars($assignment['ba_task']); ?>">
@@ -484,71 +445,14 @@ try {
                 <h2>Quality Check</h2>
                 <div class="form-group">
                     <label for="production_stage">Production Stage</label>
-                    <select id="production_stage" name="production_stage" required>
-                        <option value="" disabled selected>Select Production Stage</option>
+                    <select id="production_stage" name="production_stage">
+                        <option value="">Select Production Stage</option>
                         <option value="Mixing">Mixing</option>
                         <option value="Baking">Baking</option>
                         <option value="Cooling">Cooling</option>
                         <option value="Decorating">Decorating</option>
                         <option value="Packaging">Packaging</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="appearance">Appearance</label>
-                    <select id="appearance" name="appearance" required>
-                        <option value="" disabled selected>Select Appearance</option>
-                        <option value="Good">Good</option>
-                        <option value="Uneven Surface">Uneven Surface</option>
-                        <option value="Overbaked">Overbaked</option>
-                        <option value="Undercooked">Undercooked</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="texture">Texture</label>
-                    <select id="texture" name="texture" required>
-                        <option value="" disabled selected>Select Texture</option>
-                        <option value="Soft & Fluffy">Soft & Fluffy</option>
-                        <option value="Dense">Dense</option>
-                        <option value="Dry">Dry</option>
-                        <option value="Soggy">Soggy</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="taste_flavour">Taste & Flavour</label>
-                    <select id="taste_flavour" name="taste_flavour" required>
-                        <option value="" disabled selected>Select Taste & Flavour</option>
-                        <option value="Excellent Flavour">Excellent Flavour</option>
-                        <option value="Bland">Bland</option>
-                        <option value="Overly Sweet">Overly Sweet</option>
-                        <option value="Burnt Taste">Burnt Taste</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="shape_size">Shape & Size</label>
-                    <select id="shape_size" name="shape_size" required>
-                        <option value="" disabled selected>Select Shape & Size</option>
-                        <option value="Uniform Shape">Uniform Shape</option>
-                        <option value="Uneven Size">Uneven Size</option>
-                        <option value="Cracked Surface">Cracked Surface</option>
-                        <option value="Misshaped">Misshaped</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="packaging">Packaging</label>
-                    <select id="packaging" name="packaging" required>
-                        <option value="" disabled selected>Select Packaging</option>
-                        <option value="Properly Packaged">Properly Packaged</option>
-                        <option value="Damaged Packaged">Damaged Packaged</option>
-                        <option value="Missing Labels">Missing Labels</option>
-                        <option value="Sealed Incorrectly">Sealed Incorrectly</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="qc_comments">Quality Check Comments</label>
-                    <textarea id="qc_comments" name="qc_comments" rows="3" 
-                              placeholder="Enter quality check comments, production issues, or quantity concerns..."
-                    ><?php echo htmlspecialchars($batch['qc_comments'] ?? ''); ?></textarea>
                 </div>
             </div>
 
@@ -559,51 +463,6 @@ try {
             </div>
         </form>
     </main>
-
-    <script>
-function handleProductionStageChange() {
-    const stage = document.getElementById("production_stage").value;
-    const appearance = document.getElementById("appearance");
-    const texture = document.getElementById("texture");
-    const tasteFlavour = document.getElementById("taste_flavour");
-    const shapeSize = document.getElementById("shape_size");
-    const packaging = document.getElementById("packaging");
-
-    // Reset all fields
-    [appearance, texture, tasteFlavour, shapeSize, packaging].forEach(field => {
-        field.disabled = false;
-        field.classList.remove("disabled");
-    });
-
-    // Apply conditions based on selected stage
-    if (stage === "Mixing") {
-        appearance.disabled = true;
-        texture.disabled = true;
-        tasteFlavour.disabled = true;
-        shapeSize.disabled = true;
-        packaging.disabled = true;
-    } else if (stage === "Baking" || stage === "Cooling") {
-        packaging.disabled = true;
-    } else if (stage === "Decorating") {
-        shapeSize.disabled = true;
-        packaging.disabled = true;
-    } else if (stage === "Packaging") {
-        appearance.disabled = true;
-        texture.disabled = true;
-        tasteFlavour.disabled = true;
-        shapeSize.disabled = true;
-    }
-}
-// Initialize the function on page load and when selection changes
-document.addEventListener("DOMContentLoaded", () => {
-    const productionStage = document.getElementById("production_stage");
-    productionStage.addEventListener("change", handleProductionStageChange);
-    handleProductionStageChange(); // Ensure the function runs on load
-});
-
-// Initialize the function on page load
-document.addEventListener("DOMContentLoaded", handleProductionStageChange);
-</script>
 
     <script src="js/dashboard.js"></script>
     <script src="js/batch.js"></script>

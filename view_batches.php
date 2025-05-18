@@ -227,7 +227,7 @@ function getSortIndicator($column) {
                                         <!-- <div class="quality-comments">
                                             <?php echo htmlspecialchars($batch['quality_check'] ?? '-'); ?>
                                         </div> -->
-                                        <a href="edit_batch.php?id=<?php echo $batch['batch_id']; ?>&section=quality_check" 
+                                        <a href="quality_check.php?id=<?php echo $batch['batch_id']; ?>&section=quality_check" 
                                            class="action-btn edit-btn <?php echo ($batch['batch_status'] !== 'Completed') ? 'disabled' : ''; ?>" 
                                            title="<?php echo ($batch['batch_status'] !== 'Completed') ? 'Cannot edit completed batch' : 'Edit'; ?>"
                                            <?php echo ($batch['batch_status'] !== 'Completed') ? 'onclick="return false;"' : ''; ?>>
