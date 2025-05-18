@@ -9,13 +9,19 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 try {
-    // Get recipes data
+    // Get recipes data with ingredients
     $stmt = $conn->prepare("SELECT r.*, 
-                           (SELECT COUNT(*) FROM tbl_ingredients WHERE recipe_id = r.recipe_id) as ingredient_count
+                           GROUP_CONCAT(CONCAT(i.ingredient_name, ' (', i.ingredient_quantity, ' ', i.ingredient_unitOfMeasure, ')') 
+                           SEPARATOR ', ') as ingredients_list
                            FROM tbl_recipe r 
+                           LEFT JOIN tbl_ingredients i ON r.recipe_id = i.recipe_id
+                           GROUP BY r.recipe_id
                            ORDER BY r.recipe_dateCreated DESC");
     $stmt->execute();
     $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // var_dump($recipes);
+    // die();
 
     // Set headers for Excel download
     header('Content-Type: application/vnd.ms-excel');
@@ -30,16 +36,24 @@ try {
     echo "Generated on: " . date('Y-m-d H:i:s') . "\n\n";
 
     // Table headers
-    echo "Recipe Name\tCategory\tBatch Size\tIngredients Count\tDate Created\tLast Updated\n";
+    echo "Recipe Name\tCategory\tBatch Size\tIngredients\tDate Created\tLast Updated\n";
 
     // Table data
     foreach ($recipes as $recipe) {
-        echo $recipe['recipe_name'] . "\t";
-        echo $recipe['recipe_category'] . "\t";
-        echo $recipe['recipe_batchSize'] . ' ' . $recipe['recipe_unitOfMeasure'] . "\t";
-        echo $recipe['ingredient_count'] . "\t";
-        echo date('M d, Y', strtotime($recipe['recipe_dateCreated'])) . "\t";
-        echo date('M d, Y', strtotime($recipe['recipe_dateUpdated'])) . "\n";
+        // Escape special characters and wrap in quotes to handle commas and tabs
+        $recipe_name = '"' . str_replace('"', '""', $recipe['recipe_name']) . '"';
+        $category = '"' . str_replace('"', '""', $recipe['recipe_category']) . '"';
+        $batch_size = '"' . str_replace('"', '""', $recipe['recipe_batchSize'] . ' ' . $recipe['recipe_unitOfMeasure']) . '"';
+        $ingredients = '"' . str_replace('"', '""', $recipe['ingredients_list'] ?: 'No ingredients') . '"';
+        $date_created = '"' . date('M d, Y', strtotime($recipe['recipe_dateCreated'])) . '"';
+        $date_updated = '"' . date('M d, Y', strtotime($recipe['recipe_dateUpdated'])) . '"';
+
+        echo $recipe_name . "\t" . 
+             $category . "\t" . 
+             $batch_size . "\t" . 
+             $ingredients . "\t" . 
+             $date_created . "\t" . 
+             $date_updated . "\n";
     }
 
     // Get the content and clean the buffer
@@ -54,4 +68,4 @@ try {
     error_log("Export Error: " . $e->getMessage());
     header("Location: view_recipes.php?error=export_failed");
     exit();
-} 
+}
