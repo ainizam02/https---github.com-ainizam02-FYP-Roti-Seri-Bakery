@@ -9,14 +9,25 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 try {
-    // Get batches data with related information
+    // Get batches data with related information including quality checks
     $query = "SELECT b.*, r.recipe_name, s.schedule_date, s.schedule_batchNum,
-              GROUP_CONCAT(DISTINCT CONCAT(u.user_fullName, ' (', ba.ba_task, ')') SEPARATOR ', ') as assigned_users
+              GROUP_CONCAT(DISTINCT CONCAT(u.user_fullName, ' (', ba.ba_task, ')') SEPARATOR ', ') as assigned_users,
+              GROUP_CONCAT(DISTINCT CONCAT(
+                  'Stage: ', COALESCE(qc.production_stage, 'N/A'),
+                  ' | Appearance: ', COALESCE(qc.appearance, 'N/A'),
+                  ' | Texture: ', COALESCE(qc.texture, 'N/A'),
+                  ' | Taste: ', COALESCE(qc.taste_flavour, 'N/A'),
+                  ' | Shape: ', COALESCE(qc.shape_size, 'N/A'),
+                  ' | Packaging: ', COALESCE(qc.packaging, 'N/A'),
+                  ' | Comments: ', COALESCE(qc.qc_comments, 'N/A'),
+                  ' | Date: ', DATE_FORMAT(qc.created_at, '%M %d, %Y %H:%i')
+              ) SEPARATOR '\n') as quality_checks
               FROM tbl_batches b
               LEFT JOIN tbl_recipe r ON b.recipe_id = r.recipe_id
               LEFT JOIN tbl_schedule s ON b.schedule_id = s.schedule_id
               LEFT JOIN tbl_batch_assignments ba ON b.batch_id = ba.batch_id
               LEFT JOIN tbl_users u ON ba.user_id = u.user_id
+              LEFT JOIN tbl_quality_checks qc ON b.batch_id = qc.batch_id
               GROUP BY b.batch_id
               ORDER BY b.batch_startTime DESC";
 
@@ -37,7 +48,7 @@ try {
     echo "Generated on: " . date('Y-m-d H:i:s') . "\n\n";
 
     // Table headers
-    echo "Batch ID\tRecipe\tSchedule Date\tStart Time\tEnd Time\tAssigned Users\tStatus\tRemarks\n";
+    echo "Batch ID\tRecipe\tSchedule Date\tStart Time\tEnd Time\tAssigned Users\tStatus\tRemarks\tQuality Checks\n";
 
     // Table data
     foreach ($batches as $batch) {
@@ -50,6 +61,7 @@ try {
         $assigned_users = '"' . str_replace('"', '""', $batch['assigned_users'] ?? 'No assignments') . '"';
         $status = '"' . str_replace('"', '""', $batch['batch_status']) . '"';
         $remarks = '"' . str_replace('"', '""', $batch['batch_remarks'] ?? '-') . '"';
+        $quality_checks = '"' . str_replace('"', '""', $batch['quality_checks'] ?? 'No quality checks') . '"';
 
         echo $batch_id . "\t" .
              $recipe_name . "\t" .
@@ -58,7 +70,8 @@ try {
              $end_time . "\t" .
              $assigned_users . "\t" .
              $status . "\t" .
-             $remarks . "\n";
+             $remarks . "\t" .
+             $quality_checks . "\n";
     }
 
     // Get the content and clean the buffer
