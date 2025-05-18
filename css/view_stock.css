@@ -1,0 +1,175 @@
+.dashboard-section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-section h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.recipes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.recipes-table th,
+.recipes-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.recipes-table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+}
+
+.recipes-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.category-badge.rotiboy {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.category-badge.rotisus {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.category-badge.rotisardin {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.category-badge.rotituna {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.alert.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.action-btn i {
+    margin-right: 6px;
+}
+
+.view-btn {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.view-btn:hover {
+    background-color: #bbdefb;
+}
+
+.edit-btn {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.edit-btn:hover {
+    background-color: #ffe0b2;
+}
+
+.delete-btn {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.delete-btn:hover {
+    background-color: #ffcdd2;
+}
+
+.stock-level {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-fill.low {
+    background-color: #f44336;
+}
+
+.progress-fill.medium {
+    background-color: #ff9800;
+}
+
+.progress-fill.high {
+    background-color: #4caf50;
+}
+
+.stock-value {
+    min-width: 60px;
+    text-align: right;
+    font-weight: 500;
+    color: #333;
+} 
