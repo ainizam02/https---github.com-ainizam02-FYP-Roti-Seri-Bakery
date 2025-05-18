@@ -207,7 +207,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Batch - YSLProduction</title>
+    <title>Add Batch - Roti Seri Production</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/batch.css">
@@ -338,12 +338,6 @@ try {
                 <button type="button" class="add-task-btn" onclick="addTask()">
                     <i class="fas fa-plus"></i> Add Another Task
                 </button>
-            </div>
-
-            <div class="form-group">
-                <label for="quality_check">Quality Check Comments</label>
-                <textarea id="quality_check" name="quality_check" rows="3" 
-                          placeholder="Enter quality check comments, production issues, or quantity concerns..."></textarea>
             </div>
 
             <div class="form-actions">

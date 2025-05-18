@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to YSLProduction</title>
+    <title>Welcome to Roti Seri Production</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
 
     <main>
         <div class="hero-content">
-            <h1>YSLProduction</h1>
+            <h1>Roti Seri Production</h1>
             <p>Register Here To Get Started</p>
             <button class="register-button" id="registerBtn">
                 Register Here
@@ -34,7 +34,7 @@
 
     <footer>
         <img src="assets/images/footer.png" alt="YSL Production Logo" class="footer-logo">
-        <p class="footer-text">&copy; 2024 YSLProduction | Production System</p>
+        <p class="footer-text">&copy; 2024 Roti Seri Production | Production System</p>
     </footer>
     <script src="js/script.js"></script>
 </body>

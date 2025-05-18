@@ -90,7 +90,7 @@
     <!-- Footer -->
     <footer>
         <img src="assets/images/footer.png" alt="YSL Production Logo" class="footer-logo">
-        <p class="footer-text">&copy; 2024 YSLProduction | Production System</p>
+        <p class="footer-text">&copy; 2024 Roti Seri Production | Production System</p>
     </footer>
 </body>
 

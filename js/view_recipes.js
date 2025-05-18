@@ -19,11 +19,7 @@ function deleteRecipe(recipeId) {
                     const remainingRows = document.querySelectorAll('.recipes-table tbody tr');
                     if (remainingRows.length === 0) {
                         const tableContainer = document.querySelector('.table-responsive');
-                        tableContainer.innerHTML = `
-                            <div class="no-recipes">
-                                <p>No recipes found.</p>
-                            </div>
-                        `;
+                        tableContainer.innerHTML = `<div class="no-recipes"><p>No recipes found.</p></div>`;
                     }
                 }
                 alert('Recipe deleted successfully');
@@ -37,6 +33,35 @@ function deleteRecipe(recipeId) {
         });
     }
 }
+
+function viewImage(imageSrc) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+
+    modal.style.display = 'block';
+    modalImg.src = imageSrc;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.recipes-table img').forEach(img => {
+        img.addEventListener('click', () => viewImage(img.src));
+        img.onerror = function() {
+            this.src = 'images/default_recipe_image.jpg';
+        };
+    });
+
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.modal').style.display = 'none';
+        });
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    });
+});
 
 function viewIngredients(recipeId) {
     fetch(`get_ingredients.php?recipe_id=${recipeId}`)
@@ -108,6 +133,15 @@ function viewInstructions(recipeId) {
             alert('Error loading instructions');
         });
 }
+
+// Image error handling (in case of missing images)
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.recipes-table img').forEach(img => {
+        img.onerror = function() {
+            this.src = 'images/default_recipe_image.jpg'; // Default image
+        };
+    });
+});
 
 // Add modal close handlers
 document.querySelectorAll('.close-modal').forEach(button => {

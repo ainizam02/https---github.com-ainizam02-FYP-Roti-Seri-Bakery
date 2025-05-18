@@ -107,7 +107,7 @@ function getSortIndicator($column) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Batches - YSLProduction</title>
+    <title>View Batches - Roti Seri Production</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/batch.css">
@@ -228,9 +228,9 @@ function getSortIndicator($column) {
                                             <?php echo htmlspecialchars($batch['quality_check'] ?? '-'); ?>
                                         </div> -->
                                         <a href="edit_batch.php?id=<?php echo $batch['batch_id']; ?>&section=quality_check" 
-                                           class="action-btn edit-btn <?php echo ($batch['batch_status'] === 'Completed') ? 'disabled' : ''; ?>" 
-                                           title="<?php echo ($batch['batch_status'] === 'Completed') ? 'Cannot edit completed batch' : 'Edit'; ?>"
-                                           <?php echo ($batch['batch_status'] === 'Completed') ? 'onclick="return false;"' : ''; ?>>
+                                           class="action-btn edit-btn <?php echo ($batch['batch_status'] !== 'Completed') ? 'disabled' : ''; ?>" 
+                                           title="<?php echo ($batch['batch_status'] !== 'Completed') ? 'Cannot edit completed batch' : 'Edit'; ?>"
+                                           <?php echo ($batch['batch_status'] !== 'Completed') ? 'onclick="return false;"' : ''; ?>>
                                             <i class="fas fa-edit"></i> 
                                         </a>
                                         <button class="action-btn edit-btn" 
@@ -239,7 +239,7 @@ function getSortIndicator($column) {
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </td>
-                                    <td class="remarks-cell"><?php echo htmlspecialchars($batch['batch_remarks'] ?? '-'); ?></td>
+                                    <td class="remarks-cell"><?php echo htmlspecialchars($batch['quality_check'] ?? '-'); ?></td>
                                     <td class="actions">
                                         <a href="edit_batch.php?id=<?php echo $batch['batch_id']; ?>&section=action" 
                                            class="action-btn edit-btn <?php echo ($batch['batch_status'] === 'Completed') ? 'disabled' : ''; ?>" 
@@ -337,7 +337,8 @@ function getSortIndicator($column) {
                                     <th>Texture</th>
                                     <th>Taste & Flavour</th>
                                     <th>Shape & Size</th>
-                                    <th>Packaging</th>
+                                    <th>Packaging</th>  
+                                    <th>Remarks</th>                                  
                                     <th>Date & Time</th>
                                 </tr>
                             </thead>
@@ -353,6 +354,7 @@ function getSortIndicator($column) {
                                 <td>${qc.taste_flavour}</td>
                                 <td>${qc.shape_size}</td>
                                 <td>${qc.packaging}</td>
+                                <td>${qc.qc_comments}</td>
                                 <td>${new Date(qc.created_at).toLocaleString()}</td>
                             </tr>
                         `;

@@ -15,12 +15,34 @@ function addTask() {
         </div>
         <div class="form-group">
             <label>Task</label>
-            <select name="assignments[${taskCount}][task]" required>
+            <select name="assignments[${taskCount}][task]" class="task-select" required onchange="handleTaskChange(this)">
                 <option value="">Select Task</option>
                 <option value="Mixing">Mixing</option>
                 <option value="Baking">Baking</option>
+                <option value="Cooling">Cooling</option>
                 <option value="Decorating">Decorating</option>
+                <option value="Packaging">Packaging</option>
             </select>
+        </div>
+         <div class="form-group">
+            <label>Appearance</label>
+            <input type="text" name="assignments[${taskCount}][appearance]" class="task-field appearance" required>
+        </div>
+        <div class="form-group">
+            <label>Texture</label>
+            <input type="text" name="assignments[${taskCount}][texture]" class="task-field texture" required>
+        </div>
+        <div class="form-group">
+            <label>Taste & Flavour</label>
+            <input type="text" name="assignments[${taskCount}][taste_flavour]" class="task-field taste_flavour" required>
+        </div>
+        <div class="form-group">
+            <label>Shape & Size</label>
+            <input type="text" name="assignments[${taskCount}][shape_size]" class="task-field shape_size" required>
+        </div>
+        <div class="form-group">
+            <label>Packaging</label>
+            <input type="text" name="assignments[${taskCount}][packaging]" class="task-field packaging" required>
         </div>
         <button type="button" class="remove-task" onclick="removeTask(this)">
             <i class="fas fa-times"></i>
@@ -85,6 +107,7 @@ function viewQc(batchId) {
                             <th>Taste & Flavour</th>
                             <th>Shape & Size</th>
                             <th>Packaging</th>
+                            <th>Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,6 +122,7 @@ function viewQc(batchId) {
                         <td>${qc.taste_flavour}</td>
                         <td>${qc.shape_size}</td>
                         <td>${qc.packaging}</td>
+                        <td>${qc.qc_comments}</td>
                     </tr>
                 `;
             });

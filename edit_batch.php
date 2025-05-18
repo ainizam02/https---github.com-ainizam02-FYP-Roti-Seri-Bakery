@@ -94,14 +94,19 @@ try {
             $taste_flavour = filter_input(INPUT_POST, 'taste_flavour', FILTER_SANITIZE_STRING);
             $shape_size = filter_input(INPUT_POST, 'shape_size', FILTER_SANITIZE_STRING);
             $packaging = filter_input(INPUT_POST, 'packaging', FILTER_SANITIZE_STRING);
+            $qc_comments = trim(filter_var($_POST['qc_comments'], FILTER_SANITIZE_STRING));
 
             // Validate inputs
-            $allowed_stages = ['Mixing', 'Baking', 'Cooling', 'Packaging'];
+            $allowed_stages = ['Mixing', 'Baking', 'Cooling', 'Decorating', 'Packaging'];
             $allowed_appearance = ['Good', 'Uneven Surface', 'Overbaked', 'Undercooked'];
             $allowed_texture = ['Soft & Fluffy', 'Dense', 'Dry', 'Soggy'];
             $allowed_taste_flavour = ['Excellent Flavour', 'Bland', 'Overly Sweet', 'Burnt Taste'];
             $allowed_shape_size = ['Uniform Shape', 'Uneven Size', 'Cracked Surface', 'Misshaped'];
             $allowed_packaging = ['Properly Packaged', 'Damaged Packaged', 'Missing Labels', 'Sealed Incorrectly'];
+// Validate QC Comments
+        if (strlen($qc_comments) > MAX_QUALITY_CHECK_LENGTH) {
+            throw new Exception("QC Comments exceed the maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
+        }
 
             if (!in_array($production_stage, $allowed_stages) ||
                 !in_array($appearance, $allowed_appearance) ||
@@ -113,8 +118,8 @@ try {
 
             // Insert Quality Check data into the database
             $stmt = $conn->prepare("INSERT INTO tbl_quality_checks 
-                (batch_id, user_id, production_stage, appearance, texture, taste_flavour, shape_size, packaging) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                (batch_id, user_id, production_stage, appearance, texture, taste_flavour, shape_size, packaging, qc_comments) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([
                 $batch_id,
                 $_SESSION['user_id'],
@@ -123,8 +128,10 @@ try {
                 $texture,
                 $taste_flavour,
                 $shape_size,
-                $packaging
+                $packaging,
+                $qc_comments
             ]);
+            
 
             // $success_message = "Quality check data submitted successfully!";
 
@@ -190,7 +197,7 @@ try {
             if (strlen($remarks) > MAX_REMARKS_LENGTH) {
                 throw new Exception("Remarks exceed maximum length of " . MAX_REMARKS_LENGTH . " characters");
             }
-            if (strlen($quality_check) > MAX_QUALITY_CHECK_LENGTH) {
+            if (strlen($qc_comments) > MAX_QUALITY_CHECK_LENGTH) {
                 throw new Exception("Quality check comments exceed maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
             }
 
@@ -293,7 +300,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Batch - YSLProduction</title>
+    <title>Edit Batch - Roti Seri Production</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/batch.css">
@@ -444,15 +451,18 @@ try {
                 <div class="form-group">
                     <label for="production_stage">Production Stage</label>
                     <select id="production_stage" name="production_stage" required>
+                        <option value="" disabled selected>Select Production Stage</option>
                         <option value="Mixing">Mixing</option>
                         <option value="Baking">Baking</option>
                         <option value="Cooling">Cooling</option>
+                        <option value="Decorating">Decorating</option>
                         <option value="Packaging">Packaging</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="appearance">Appearance</label>
                     <select id="appearance" name="appearance" required>
+                        <option value="" disabled selected>Select Appearance</option>
                         <option value="Good">Good</option>
                         <option value="Uneven Surface">Uneven Surface</option>
                         <option value="Overbaked">Overbaked</option>
@@ -462,6 +472,7 @@ try {
                 <div class="form-group">
                     <label for="texture">Texture</label>
                     <select id="texture" name="texture" required>
+                        <option value="" disabled selected>Select Texture</option>
                         <option value="Soft & Fluffy">Soft & Fluffy</option>
                         <option value="Dense">Dense</option>
                         <option value="Dry">Dry</option>
@@ -471,6 +482,7 @@ try {
                 <div class="form-group">
                     <label for="taste_flavour">Taste & Flavour</label>
                     <select id="taste_flavour" name="taste_flavour" required>
+                        <option value="" disabled selected>Select Taste & Flavour</option>
                         <option value="Excellent Flavour">Excellent Flavour</option>
                         <option value="Bland">Bland</option>
                         <option value="Overly Sweet">Overly Sweet</option>
@@ -480,6 +492,7 @@ try {
                 <div class="form-group">
                     <label for="shape_size">Shape & Size</label>
                     <select id="shape_size" name="shape_size" required>
+                        <option value="" disabled selected>Select Shape & Size</option>
                         <option value="Uniform Shape">Uniform Shape</option>
                         <option value="Uneven Size">Uneven Size</option>
                         <option value="Cracked Surface">Cracked Surface</option>
@@ -488,7 +501,8 @@ try {
                 </div>
                 <div class="form-group">
                     <label for="packaging">Packaging</label>
-                    <select id="packaging" name="packaging">
+                    <select id="packaging" name="packaging" required>
+                        <option value="" disabled selected>Select Packaging</option>
                         <option value="Properly Packaged">Properly Packaged</option>
                         <option value="Damaged Packaged">Damaged Packaged</option>
                         <option value="Missing Labels">Missing Labels</option>
@@ -497,10 +511,10 @@ try {
                 </div>
 
                 <div class="form-group">
-                    <label for="quality_check">Quality Check Comments</label>
-                    <textarea id="quality_check" name="quality_check" rows="3" <?php echo $is_baker ? 'readonly' : ''; ?> 
+                    <label for="qc_comments">Quality Check Comments</label>
+                    <textarea id="qc_comments" name="qc_comments" rows="3" <?php echo $is_baker ? 'readonly' : ''; ?> 
                               placeholder="Enter quality check comments, production issues, or quantity concerns..."
-                    ><?php echo htmlspecialchars($batch['quality_check'] ?? ''); ?></textarea>
+                    ><?php echo htmlspecialchars($batch['qc_comments'] ?? ''); ?></textarea>
                 </div>
             </div>
 
@@ -511,6 +525,51 @@ try {
             </div>
         </form>
     </main>
+
+    <script>
+function handleProductionStageChange() {
+    const stage = document.getElementById("production_stage").value;
+    const appearance = document.getElementById("appearance");
+    const texture = document.getElementById("texture");
+    const tasteFlavour = document.getElementById("taste_flavour");
+    const shapeSize = document.getElementById("shape_size");
+    const packaging = document.getElementById("packaging");
+
+    // Reset all fields
+    [appearance, texture, tasteFlavour, shapeSize, packaging].forEach(field => {
+        field.disabled = false;
+        field.classList.remove("disabled");
+    });
+
+    // Apply conditions based on selected stage
+    if (stage === "Mixing") {
+        appearance.disabled = true;
+        texture.disabled = true;
+        tasteFlavour.disabled = true;
+        shapeSize.disabled = true;
+        packaging.disabled = true;
+    } else if (stage === "Baking" || stage === "Cooling") {
+        packaging.disabled = true;
+    } else if (stage === "Decorating") {
+        shapeSize.disabled = true;
+        packaging.disabled = true;
+    } else if (stage === "Packaging") {
+        appearance.disabled = true;
+        texture.disabled = true;
+        tasteFlavour.disabled = true;
+        shapeSize.disabled = true;
+    }
+}
+// Initialize the function on page load and when selection changes
+document.addEventListener("DOMContentLoaded", () => {
+    const productionStage = document.getElementById("production_stage");
+    productionStage.addEventListener("change", handleProductionStageChange);
+    handleProductionStageChange(); // Ensure the function runs on load
+});
+
+// Initialize the function on page load
+document.addEventListener("DOMContentLoaded", handleProductionStageChange);
+</script>
 
     <script src="js/dashboard.js"></script>
     <script src="js/batch.js"></script>

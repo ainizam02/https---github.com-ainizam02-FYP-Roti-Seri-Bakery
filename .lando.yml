@@ -1,0 +1,14 @@
+name: fyp
+recipe: lamp
+config:
+  webroot: .
+  php: '8.1'
+  database: mysql
+  services:
+    database:
+      type: mysql
+      portforward: true
+      creds:
+        user: fyp_user
+        password: fyp_password
+        database: production_db

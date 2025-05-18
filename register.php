@@ -126,7 +126,7 @@ if (empty($_SESSION['csrf_token'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - YSLProduction</title>
+    <title>Register - Roti Seri Production</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/register.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -229,7 +229,7 @@ if (empty($_SESSION['csrf_token'])) {
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 YSLProduction | Production System</p>
+        <p>&copy; 2024 Roti Seri Production | Production System</p>
         <img src='assets/images/footer.png' alt='YSL Production Logo'>
     </footer>
 

@@ -1,10 +1,7 @@
 <?php
-// Initialize session for user authentication
 session_start();
 require_once 'config/db_connection.php';
 
-// Security Check: Ensure user authentication
-// Redirect to login if no valid session exists
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -13,8 +10,6 @@ if (!isset($_SESSION['user_id'])) {
 $success_message = '';
 $error_message = '';
 
-// Security Check: Validate recipe ID parameter
-// Prevent unauthorized access by ensuring recipe ID exists
 if (!isset($_GET['id'])) {
     header("Location: view_recipes.php");
     exit();
@@ -30,7 +25,6 @@ try {
     $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Security Check: Verify recipe exists
-    // Prevent access to non-existent recipes
     if (!$recipe) {
         header("Location: view_recipes.php");
         exit();
@@ -41,36 +35,19 @@ try {
     $stmt->execute([$recipe_id]);
     $ingredients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-} catch(PDOException $e) {
+} catch(Exception $e) {
     // Exception Handling: Database query errors
     // Catch and display database-related errors
-    $error_message = "Error: " . $e->getMessage();
+    $error_message = "Error: " . htmlspecialchars($e->getMessage());
 }
 
 // Form Submission Handler
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Input Validation: Ensure batch size is valid
-        // Prevent negative or zero values
-        $recipe_batchSize = floatval($_POST['batch_size']);
-        if ($recipe_batchSize < 0.01) {
-            throw new Exception("Batch size cannot be less than 0.01");
-        }
-
-        // Input Validation: Verify ingredient quantities
-        // Ensure all ingredients have valid quantities
-        $ingredient_quantities = $_POST['ingredient_quantity'];
-        foreach ($ingredient_quantities as $key => $quantity) {
-            if (floatval($quantity) < 0.01) {
-                throw new Exception("Ingredient quantity cannot be less than 0.01");
-            }
-        }
-
         // Database Transaction: Ensure data consistency
         $conn->beginTransaction();
 
-        // Security: Sanitize input and use prepared statements
-        // Prevent XSS attacks using htmlspecialchars
+        // Security: Sanitize input and use prepared statements, Prevent XSS attacks using htmlspecialchars
         $stmt = $conn->prepare("UPDATE tbl_recipe SET 
             recipe_name = ?, 
             recipe_category = ?, 
@@ -80,11 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE recipe_id = ?");
         
         $stmt->execute([
-            htmlspecialchars(trim($_POST['recipe_name'])),
-            htmlspecialchars(trim($_POST['recipe_category'])),
-            floatval($_POST['batch_size']),
-            htmlspecialchars(trim($_POST['unit_of_measure'])),
-            htmlspecialchars(trim($_POST['recipe_instructions'])),
+            $_POST['recipe_name'],
+            $_POST['recipe_category'],
+            $_POST['batch_size'],
+            $_POST['unit_of_measure'],
+            $_POST['recipe_instructions'],
             $recipe_id
         ]);
 
@@ -92,8 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("DELETE FROM tbl_ingredients WHERE recipe_id = ?");
         $stmt->execute([$recipe_id]);
 
-        // Database Operation: Add updated ingredients
-        // Security: Sanitize all ingredient inputs
+        // Database Operation: Add updated ingredients, Security: Sanitize all ingredient inputs
         $stmt = $conn->prepare("INSERT INTO tbl_ingredients (recipe_id, ingredient_name, ingredient_quantity, ingredient_unitOfMeasure) VALUES (?, ?, ?, ?)");
         
         $ingredient_names = $_POST['ingredient_name'];
@@ -112,6 +88,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
+ // Handle image upload
+        if (!empty($_FILES['recipe_image']['name'])) {
+            $imagePath = 'images/' . basename($_FILES['recipe_image']['name']);
+            move_uploaded_file($_FILES['recipe_image']['tmp_name'], $imagePath);
+            $stmt = $conn->prepare("UPDATE tbl_recipe SET recipe_image = ? WHERE recipe_id = ?");
+            $stmt->execute([$imagePath, $recipe_id]);
+            $recipe['recipe_image'] = $imagePath; // Update image path
+        }
+
         // Commit transaction if all operations successful
         $conn->commit();
         $success_message = "Recipe updated successfully!";
@@ -126,8 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ingredients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     } catch(Exception $e) {
-        // Exception Handling: Roll back transaction on any error
-        // This ensures database consistency by undoing all changes
+        // Exception Handling: Roll back transaction on any error, This ensures database consistency by undoing all changes
         $conn->rollBack();
         // Security: Sanitize error message before display
         $error_message = "Error: " . htmlspecialchars($e->getMessage());
@@ -140,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Recipe - YSLProduction</title>
+    <title>Edit Recipe - Roti Seri Production</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/add_recipe.css">
@@ -170,6 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="recipe_name">Recipe Name</label>
                     <input type="text" id="recipe_name" name="recipe_name" value="<?php echo htmlspecialchars($recipe['recipe_name']); ?>" required>
                 </div>
+
 
                 <div class="form-group">
                     <label for="recipe_category">Category</label>

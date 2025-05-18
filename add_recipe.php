@@ -21,8 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Validate ingredient quantities
-        $ingredient_quantities = $_POST['ingredient_quantity'];
-        foreach ($ingredient_quantities as $key => $quantity) {
+        foreach ($_POST['ingredient_quantity'] as $quantity) {
             if (floatval($quantity) < 0.01) {
                 throw new Exception("Ingredient quantity cannot be less than 0.01");
             }
@@ -33,46 +32,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Get recipe details
         $recipe_name = htmlspecialchars(trim($_POST['recipe_name']));
         $recipe_category = htmlspecialchars(trim($_POST['recipe_category']));
-        $recipe_batchSize = floatval($_POST['batch_size']);
+        //$recipe_batchSize = floatval($_POST['batch_size']);
         $recipe_unitOfMeasure = htmlspecialchars(trim($_POST['unit_of_measure']));
         $recipe_instructions = htmlspecialchars(trim($_POST['recipe_instructions']));
 
         // Handle image upload
-        $imagePath = '';
-        if (isset($_FILES['recipe_image']) && $_FILES['recipe_image']['error'] === 0) {
-            $imagePath = 'uploads/' . basename($_FILES['recipe_image']['name']);
-            move_uploaded_file($_FILES['recipe_image']['tmp_name'], $imagePath);
+        $image_path = null;
+        if (isset($_FILES['recipe_image']) && $_FILES['recipe_image']['error'] == 0) {
+            $target_dir = "images/recipes/";
+            if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+            $target_file = $target_dir . uniqid() . "_" . basename($_FILES['recipe_image']['name']);
+            if (move_uploaded_file($_FILES['recipe_image']['tmp_name'], $target_file)) {
+                $image_path = $target_file;
+            } else {
+                throw new Exception("Failed to upload the recipe image.");
+            }
         }
 
         // Insert recipe
-        $stmt = $conn->prepare("INSERT INTO tbl_recipe (recipe_name, recipe_category, recipe_batchSize, recipe_unitOfMeasure, recipe_instructions, recipe_image) 
-                              VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->execute([
-            htmlspecialchars(trim($_POST['recipe_name'])),
-            htmlspecialchars(trim($_POST['recipe_category'])),
-            $recipe_batchSize,
-            htmlspecialchars(trim($_POST['unit_of_measure'])),
-            htmlspecialchars(trim($_POST['recipe_instructions'])),
-            $imagePath
-        ]);
+        $stmt = $conn->prepare("INSERT INTO tbl_recipe (recipe_name, recipe_category, recipe_batchSize, recipe_unitOfMeasure, recipe_instructions, image_path) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$recipe_name, $recipe_category, $recipe_batchSize, $recipe_unitOfMeasure, $recipe_instructions, $image_path]);
 
         $recipe_id = $conn->lastInsertId();
 
         // Insert ingredients
-        $ingredient_names = $_POST['ingredient_name'];
-        $ingredient_quantities = $_POST['ingredient_quantity'];
-        $ingredient_units = $_POST['ingredient_unit'];
+        $stmt = $conn->prepare("INSERT INTO tbl_ingredients (recipe_id, ingredient_name, ingredient_quantity, ingredient_unitOfMeasure) VALUES (?, ?, ?, ?)");
 
-        $stmt = $conn->prepare("INSERT INTO tbl_ingredients (recipe_id, ingredient_name, ingredient_quantity, ingredient_unitOfMeasure) 
-                              VALUES (?, ?, ?, ?)");
-
-        foreach ($ingredient_names as $key => $name) {
+        foreach ($_POST['ingredient_name'] as $key => $name) {
             if (!empty($name)) {
                 $stmt->execute([
                     $recipe_id,
-                    htmlspecialchars(trim($name)),
-                    floatval($ingredient_quantities[$key]),
-                    htmlspecialchars(trim($ingredient_units[$key]))
+                    trim($name),
+                    floatval($_POST['ingredient_quantity'][$key]),
+                    trim($_POST['ingredient_unit'][$key])
                 ]);
             }
         }
@@ -115,7 +107,7 @@ $stmt->execute([
             <div class="alert error"><?php echo $error_message; ?></div>
         <?php endif; ?>
 
-        <form method="POST" class="recipe-form">
+        <form method="POST" class="recipe-form" enctype="multipart/form-data">
             <div class="form-section">
                 <h2>Recipe Details</h2>
                 <div class="form-group">
@@ -124,12 +116,12 @@ $stmt->execute([
                 </div>
 
                 <div class="form-group">
-                <label for="recipe_image">Recipe Image</label>
-                <input type="file" name="recipe_image" accept="image/*">
-                <div class="image-preview" id="imagePreview">
-                    <img src="" alt="Recipe Image Preview" class="image-preview__image" style="display: none; width: 400px; height: 300px; object-fit: cover;">
+                    <label for="recipe_image">Recipe Image</label>
+                    <input type="file" name="recipe_image" accept="image/*">
+                    <div class="image-preview" id="imagePreview">
+                        <img src="" alt="Recipe Image Preview" class="image-preview__image" style="display: none; width: 400px; height: 300px; object-fit: cover;">
+                    </div>
                 </div>
-            </div>
 
                 <div class="form-group">
                     <label for="recipe_category">Category</label>

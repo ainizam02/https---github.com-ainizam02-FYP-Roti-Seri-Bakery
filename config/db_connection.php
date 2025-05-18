@@ -1,7 +1,7 @@
 <?php
-$host = "localhost";
-$username = "root";
-$password = "";
+$host = "database";
+$username = "fyp_user";
+$password = "fyp_password";
 $database = "production_db";
 
 try {
@@ -12,4 +12,4 @@ try {
     echo "Connection failed: " . $e->getMessage();
     die();
 }
-?> 
+?>
