@@ -239,7 +239,7 @@ function getSortIndicator($column) {
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </td>
-                                    <td class="remarks-cell"><?php echo htmlspecialchars($batch['quality_check'] ?? '-'); ?></td>
+                                    <td class="remarks-cell"><?php echo htmlspecialchars($batch['batch_remarks'] ?? '-'); ?></td>
                                     <td class="actions">
                                         <a href="edit_batch.php?id=<?php echo $batch['batch_id']; ?>&section=action" 
                                            class="action-btn edit-btn <?php echo ($batch['batch_status'] === 'Completed') ? 'disabled' : ''; ?>" 
