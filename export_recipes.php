@@ -36,7 +36,7 @@ try {
     echo "Generated on: " . date('Y-m-d H:i:s') . "\n\n";
 
     // Table headers
-    echo "Recipe Name\tCategory\tBatch Size\tIngredients\tDate Created\tLast Updated\n";
+    echo "Recipe Name\tCategory\tBatch Size\tIngredients\tInstructions\tDate Created\tLast Updated\n";
 
     // Table data
     foreach ($recipes as $recipe) {
@@ -45,14 +45,16 @@ try {
         $category = '"' . str_replace('"', '""', $recipe['recipe_category']) . '"';
         $batch_size = '"' . str_replace('"', '""', $recipe['recipe_batchSize'] . ' ' . $recipe['recipe_unitOfMeasure']) . '"';
         $ingredients = '"' . str_replace('"', '""', $recipe['ingredients_list'] ?: 'No ingredients') . '"';
+        $instructions = '"' . str_replace('"', '""', $recipe['recipe_instructions'] ?: 'No instructions') . '"';
         $date_created = '"' . date('M d, Y', strtotime($recipe['recipe_dateCreated'])) . '"';
         $date_updated = '"' . date('M d, Y', strtotime($recipe['recipe_dateUpdated'])) . '"';
 
-        echo $recipe_name . "\t" . 
-             $category . "\t" . 
-             $batch_size . "\t" . 
-             $ingredients . "\t" . 
-             $date_created . "\t" . 
+        echo $recipe_name . "\t" .
+             $category . "\t" .
+             $batch_size . "\t" .
+             $ingredients . "\t" .
+             $instructions . "\t" .
+             $date_created . "\t" .
              $date_updated . "\n";
     }
 
