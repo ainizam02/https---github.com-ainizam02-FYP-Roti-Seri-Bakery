@@ -108,7 +108,12 @@ try {
         </div>
 
         <div class="dashboard-section">
-            <h2>Stock Items</h2>
+            <div class="section-header">
+                <h2>Stock Items</h2>
+                <a href="export_stock.php" class="export-btn">
+                    <i class="fas fa-file-excel"></i> Export to Excel
+                </a>
+            </div>
             <?php if (isset($error_message)): ?>
                 <div class="alert error"><?php echo $error_message; ?></div>
             <?php else: ?>

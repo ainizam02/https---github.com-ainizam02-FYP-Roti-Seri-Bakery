@@ -6,10 +6,37 @@
     margin-top: 20px;
 }
 
-.dashboard-section h2 {
-    color: #333;
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #333;
     font-size: 1.5rem;
+}
+
+.export-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #217346;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.export-btn i {
+    margin-right: 8px;
+}
+
+.export-btn:hover {
+    background-color: #1a5c38;
 }
 
 .table-responsive {
