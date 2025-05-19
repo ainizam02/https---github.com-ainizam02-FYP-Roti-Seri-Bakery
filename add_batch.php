@@ -116,14 +116,10 @@ try {
 
             // Validate and sanitize text inputs
             $remarks = trim(filter_var($_POST['remarks'], FILTER_SANITIZE_STRING));
-            $quality_check = trim(filter_var($_POST['quality_check'], FILTER_SANITIZE_STRING));
 
             // Check length limits
             if (strlen($remarks) > MAX_REMARKS_LENGTH) {
                 throw new Exception("Remarks exceed maximum length of " . MAX_REMARKS_LENGTH . " characters");
-            }
-            if (strlen($quality_check) > MAX_QUALITY_CHECK_LENGTH) {
-                throw new Exception("Quality check comments exceed maximum length of " . MAX_QUALITY_CHECK_LENGTH . " characters");
             }
 
             // Validate assignments array
@@ -163,9 +159,9 @@ try {
 
             // Insert batch
             $stmt = $conn->prepare("INSERT INTO tbl_batches (recipe_id, schedule_id, batch_startTime, 
-                                                          batch_endTime, batch_remarks, quality_check) 
-                                  VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$recipe_id, $schedule_id, $start_time, $end_time, $remarks, $quality_check]);
+                                                          batch_endTime, batch_remarks) 
+                                  VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$recipe_id, $schedule_id, $start_time, $end_time, $remarks]);
             
             $batch_id = $conn->lastInsertId();
 
